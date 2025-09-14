@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFolio - Modern Student & Faculty Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        secondary: {
+                            50: '#faf6ff',
+                            100: '#f3e8ff',
+                            200: '#e9d5ff',
+                            300: '#d8b4fe',
+                            400: '#c084fc',
+                            500: '#a855f7',
+                            600: '#9333ea',
+                            700: '#7c3aed',
+                            800: '#6b21a8',
+                            900: '#581c87',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-in': 'slideIn 0.3s ease-out',
+                        'bounce-light': 'bounceLight 1s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        bounceLight: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        .shadow-soft {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        }
+        .gradient-bg-faculty {
+            background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 gradient-bg">
+        <div class="bg-white rounded-2xl shadow-soft w-full max-w-md overflow-hidden">
+            <div class="p-8">
+                <div class="text-center mb-8">
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-primary-600 flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-white text-xl"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-800">EduFolio</h1>
+                    <p class="text-gray-500 mt-2">Your academic journey, simplified</p>
+                </div>
+
+                <div class="flex bg-gray-100 rounded-lg p-1 mb-6">
+                    <button id="student-tab" class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 tab-btn active-tab">Student</button>
+                    <button id="faculty-tab" class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 tab-btn">Faculty</button>
+                </div>
+
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition" placeholder="Enter your password">
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                            <span class="ml-2 text-gray-600">Remember me</span>
+                        </label>
+                        <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-4 rounded-lg font-medium transition duration-200 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">
+                        Don't have an account? 
+                        <a href="#" class="font-medium text-primary-600 hover:text-primary-700">Contact admin</a>
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-50 py-4 px-8 border-t border-gray-200">
+                <p class="text-xs text-center text-gray-500">© 2023 EduFolio. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="min-h-screen hidden">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-soft">
+            <div class="flex items-center justify-between px-4 py-3 md:px-6">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="p-2 rounded-lg mr-2 text-gray-600 hover:bg-gray-100 focus:outline-none md:hidden">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-graduation-cap text-white text-sm"></i>
+                        </div>
+                        <h1 class="text-xl font-bold text-gray-800 hidden md:block">EduFolio</h1>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <button class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 relative">
+                        <i class="fas fa-bell"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+                    
+                    <div class="relative" id="profile-menu">
+                        <button class="flex items-center space-x-2 focus:outline-none">
+                            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center border-2 border-primary-200">
+                                <span class="font-semibold text-primary-700" id="user-initial">U</span>
+                            </div>
+                            <span class="text-gray-700 font-medium hidden md:block" id="user-name">User Name</span>
+                            <i class="fas fa-chevron-down text-gray-400 text-xs hidden md:block"></i>
+                        </button>
+                        
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 hidden z-50" id="dropdown-menu">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-50"><i class="fas fa-user mr-2 text-gray-400"></i>Profile</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-50"><i class="fas fa-cog mr-2 text-gray-400"></i>Settings</a>
+                            <div class="border-t border-gray-200 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-50" id="logout-btn"><i class="fas fa-sign-out-alt mr-2 text-gray-400"></i>Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex flex-1">
+            <!-- Sidebar -->
+            <aside id="sidebar" class="bg-white border-r border-gray-200 w-64 fixed h-full pt-16 z-40 transition-transform -translate-x-full md:translate-x-0">
+                <div class="h-full overflow-y-auto custom-scrollbar py-4 px-3">
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-base font-medium rounded-lg text-white bg-primary-600">
+                                <i class="fas fa-home mr-4"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-base font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-tasks mr-4"></i>
+                                <span>Activities</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-base font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-certificate mr-4"></i>
+                                <span>Certificates</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-base font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-chart-line mr-4"></i>
+                                <span>Progress</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-base font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-calendar mr-4"></i>
+                                <span>Schedule</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-base font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-users mr-4"></i>
+                                <span>Students</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-3 text-base font-medium rounded-lg text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-cog mr-4"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <div class="px-4 py-3 bg-blue-50 rounded-lg border border-blue-100">
+                            <p class="text-sm font-medium text-blue-800">Need help?</p>
+                            <p class="text-xs text-blue-600 mt-1">Contact our support team</p>
+                            <button class="mt-2 w-full bg-white text-primary-600 border border-primary-200 text-xs font-medium py-2 rounded-md hover:bg-primary-50 transition">
+                                Get Help
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 pt-16 md:ml-64 transition-all duration-200">
+                <div class="p-4 md:p-6">
+                    <!-- Welcome Banner -->
+                    <div class="gradient-bg rounded-2xl p-6 text-white shadow-soft mb-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between">
+                            <div>
+                                <h2 class="text-2xl font-bold">Welcome, <span id="welcome-name">Alex Johnson</span>!</h2>
+                                <p class="mt-2 opacity-90" id="welcome-message">You have 3 pending activities and 2 new notifications.</p>
+                            </div>
+                            <button class="mt-4 md:mt-0 bg-white text-primary-600 font-medium py-2 px-4 rounded-lg hover:bg-blue-50 transition">
+                                View Portfolio
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+                        <div class="bg-white rounded-2xl p-5 shadow-soft card-hover border border-gray-100">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-lg bg-blue-100 text-blue-600">
+                                    <i class="fas fa-tasks text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm text-gray-500">Total Activities</h3>
+                                    <p class="text-2xl font-bold text-gray-800">24</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-5 shadow-soft card-hover border border-gray-100">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-lg bg-green-100 text-green-600">
+                                    <i class="fas fa-check-circle text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm text-gray-500">Completed</h3>
+                                    <p class="text-2xl font-bold text-gray-800">18</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-5 shadow-soft card-hover border border-gray-100">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-lg bg-amber-100 text-amber-600">
+                                    <i class="fas fa-clock text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm text-gray-500">Pending</h3>
+                                    <p class="text-2xl font-bold text-gray-800">5</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-5 shadow-soft card-hover border border-gray-100">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-lg bg-purple-100 text-purple-600">
+                                    <i class="fas fa-trophy text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm text-gray-500">Achievements</h3>
+                                    <p class="text-2xl font-bold text-gray-800">7</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Recent Activities -->
+                        <div class="lg:col-span-2">
+                            <div class="bg-white rounded-2xl shadow-soft overflow-hidden border border-gray-100">
+                                <div class="border-b border-gray-200 px-6 py-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">Recent Activities</h3>
+                                </div>
+                                <div class="divide-y divide-gray-100" id="activities-list">
+                                    <!-- Activities will be populated by JS -->
+                                </div>
+                                <div class="border-t border-gray-200 px-6 py-4 bg-gray-50">
+                                    <button class="text-primary-600 font-medium text-sm hover:text-primary-700 flex items-center">
+                                        <span>View all activities</span>
+                                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Sidebar -->
+                        <div class="space-y-6">
+                            <!-- Upcoming Events -->
+                            <div class="bg-white rounded-2xl shadow-soft overflow-hidden border border-gray-100">
+                                <div class="border-b border-gray-200 px-6 py-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">Upcoming Events</h3>
+                                </div>
+                                <div class="divide-y divide-gray-100" id="events-list">
+                                    <!-- Events will be populated by JS -->
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="bg-white rounded-2xl shadow-soft overflow-hidden border border-gray-100">
+                                <div class="border-b border-gray-200 px-6 py-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">Quick Actions</h3>
+                                </div>
+                                <div class="p-4 grid grid-cols-2 gap-3">
+                                    <button class="py-3 px-4 bg-blue-50 text-blue-700 rounded-lg font-medium hover:bg-blue-100 transition text-sm">
+                                        <i class="fas fa-plus mr-2"></i>Add Activity
+                                    </button>
+                                    <button class="py-3 px-4 bg-purple-50 text-purple-700 rounded-lg font-medium hover:bg-purple-100 transition text-sm">
+                                        <i class="fas fa-download mr-2"></i>Export Data
+                                    </button>
+                                    <button class="py-3 px-4 bg-amber-50 text-amber-700 rounded-lg font-medium hover:bg-amber-100 transition text-sm">
+                                        <i class="fas fa-share-alt mr-2"></i>Share Profile
+                                    </button>
+                                    <button class="py-3 px-4 bg-green-50 text-green-700 rounded-lg font-medium hover:bg-green-100 transition text-sm">
+                                        <i class="fas fa-cog mr-2"></i>Settings
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const loginScreen = document.getElementById('login-screen');
+        const dashboard = document.getElementById('dashboard');
+        const studentTab = document.getElementById('student-tab');
+        const facultyTab = document.getElementById('faculty-tab');
+        const loginForm = document.getElementById('login-form');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const profileMenu = document.getElementById('profile-menu');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userInitial = document.getElementById('user-initial');
+        const userName = document.getElementById('user-name');
+        const welcomeName = document.getElementById('welcome-name');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const activitiesList = document.getElementById('activities-list');
+        const eventsList = document.getElementById('events-list');
+        
+        let isFaculty = false;
+        let sidebarOpen = false;
+
+        // Initialize with sample data
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStudentActivities();
+            loadEvents();
+        });
+
+        // Switch between student and faculty login
+        studentTab.addEventListener('click', () => {
+            setActiveTab(studentTab, facultyTab);
+            isFaculty = false;
+        });
+
+        facultyTab.addEventListener('click', () => {
+            setActiveTab(facultyTab, studentTab);
+            isFaculty = true;
+        });
+
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const name = email.split('@')[0];
+            
+            if (isFaculty) {
+                userInitial.textContent = 'P';
+                userName.textContent = 'Prof. ' + name;
+                welcomeName.textContent = 'Professor ' + name;
+                welcomeMessage.textContent = 'You have 5 pending approvals and 3 new messages.';
+                document.querySelector('.gradient-bg').classList.add('gradient-bg-faculty');
+                loadFacultyActivities();
+            } else {
+                userInitial.textContent = 'S';
+                userName.textContent = name;
+                welcomeName.textContent = name;
+                welcomeMessage.textContent = 'You have 3 pending activities and 2 new notifications.';
+                document.querySelector('.gradient-bg').classList.remove('gradient-bg-faculty');
+                loadStudentActivities();
+            }
+            
+            // Show dashboard and hide login
+            loginScreen.classList.add('hidden');
+            dashboard.classList.remove('hidden');
+        });
+
+        // Toggle sidebar on mobile
+        sidebarToggle.addEventListener('click', () => {
+            sidebarOpen = !sidebarOpen;
+            if (sidebarOpen) {
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+
+        // Profile dropdown toggle
+        profileMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            dropdownMenu.classList.add('hidden');
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginScreen.classList.remove('hidden');
+            dashboard.classList.add('hidden');
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        });
+
+        // Helper function to set active tab
+        function setActiveTab(activeTab, inactiveTab) {
+            activeTab.classList.add('active-tab');
+            activeTab.classList.remove('text-gray-500');
+            activeTab.classList.add('text-white');
+            activeTab.classList.add('bg-primary-600');
+            
+            inactiveTab.classList.remove('active-tab');
+            inactiveTab.classList.add('text-gray-500');
+            inactiveTab.classList.remove('text-white');
+            inactiveTab.classList.remove('bg-primary-600');
+        }
+
+        // Load student activities
+        function loadStudentActivities() {
+            activitiesList.innerHTML = `
+                <div class="px-6 py-4 animate-fade-in">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-blue-100 p-3 rounded-lg">
+                            <i class="fas fa-code text-blue-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-800">Hackathon Participation</h4>
+                            <p class="text-sm text-gray-500">Smart India Hackathon 2023</p>
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Approved
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ml-auto text-sm text-gray-400">2 days ago</div>
+                    </div>
+                </div>
+                <div class="px-6 py-4 animate-fade-in">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-purple-100 p-3 rounded-lg">
+                            <i class="fas fa-microphone text-purple-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-800">Guest Lecture</h4>
+                            <p class="text-sm text-gray-500">AI and Machine Learning Workshop</p>
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Approved
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ml-auto text-sm text-gray-400">5 days ago</div>
+                    </div>
+                </div>
+                <div class="px-6 py-4 animate-fade-in">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-amber-100 p-3 rounded-lg">
+                            <i class="fas fa-book text-amber-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-800">Research Paper</h4>
+                            <p class="text-sm text-gray-500">Published in International Journal</p>
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                    Pending Review
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ml-auto text-sm text-gray-400">1 week ago</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Load faculty activities
+        function loadFacultyActivities() {
+            activitiesList.innerHTML = `
+                <div class="px-6 py-4 animate-fade-in">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-blue-100 p-3 rounded-lg">
+                            <i class="fas fa-chalkboard-teacher text-blue-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-800">Lecture Conducted</h4>
+                            <p class="text-sm text-gray-500">Advanced Algorithms - CSE402</p>
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                    Completed
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ml-auto text-sm text-gray-400">Today</div>
+                    </div>
+                </div>
+                <div class="px-6 py-4 animate-fade-in">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-green-100 p-3 rounded-lg">
+                            <i class="fas fa-users text-green-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-800">Department Meeting</h4>
+                            <p class="text-sm text-gray-500">Curriculum Review Session</p>
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                    Completed
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ml-auto text-sm text-gray-400">Yesterday</div>
+                    </div>
+                </div>
+                <div class="px-6 py-4 animate-fade-in">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-purple-100 p-3 rounded-lg">
+                            <i class="fas fa-user-graduate text-purple-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-800">Thesis Guidance</h4>
+                            <p class="text-sm text-gray-500">M.Tech CSE - Rahul Sharma</p>
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    In Progress
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ml-auto text-sm text-gray-400">2 days ago</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Load events
+        function loadEvents() {
+            eventsList.innerHTML = `
+                <div class="px-6 py-4 border-b border-gray-100">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-red-100 p-2 rounded-lg">
+                            <i class="fas fa-exclamation-circle text-red-500"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-medium text-gray-800">Deadline: Project Submission</h4>
+                            <p class="text-xs text-gray-500">Today, 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-6 py-4 border-b border-gray-100">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-blue-100 p-2 rounded-lg">
+                            <i class="fas fa-users text-blue-500"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-medium text-gray-800">Faculty Meeting</h4>
+                            <p class="text-xs text-gray-500">Tomorrow, 10:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-6 py-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-green-100 p-2 rounded-lg">
+                            <i class="fas fa-chalkboard-teacher text-green-500"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-medium text-gray-800">Workshop: Web Technologies</h4>
+                            <p class="text-xs text-gray-500">Sep 25, 2:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
